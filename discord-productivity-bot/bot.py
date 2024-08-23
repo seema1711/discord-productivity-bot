@@ -111,7 +111,13 @@ async def check_events():
 async def before_check_events():
     await bot.wait_until_ready()
 
-check_events.start()
+# Start the bot and event loop properly
+async def main():
+    # Start the background event checking task
+    check_events.start()
+    
+    # Start the bot
+    await bot.start(TOKEN)
 
 # Pomodoro timer
 @bot.command()
@@ -122,5 +128,6 @@ async def pomodoro(ctx, work_time: int = 25, break_time: int = 5):
     await asyncio.sleep(break_time * 60)
     await ctx.send("Break over, back to work!")
 
-# Start the bot
-bot.run('TOKEN')
+if __name__ == "__main__":
+    # Run the bot using asyncio to ensure the event loop is handled correctly
+    asyncio.run(main())
